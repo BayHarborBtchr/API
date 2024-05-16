@@ -1,5 +1,5 @@
 const express = require('express');
-const inventarioController = require('../controllers/inventarioController');
+const inventarioController = require('./controllers/inventarioController');
 const morgan = require('morgan');
 const app = express();
 app.use(morgan('dev'));
