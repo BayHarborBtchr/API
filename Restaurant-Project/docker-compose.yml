@@ -15,28 +15,28 @@ services:
         read_only: true
 
   usuarios:
-    image: blwmi/usuarios:latest
+    image: blwmi/usuarios
     ports:
       - "3001:3001"
     depends_on:
       - db
 
   inventario:
-    image: blwmi/inventario:latest
+    image: blwmi/inventario
     ports:
       - "3002:3002"
     depends_on:
       - db
 
   facturas:
-    image: blwmi/facturas:latest
+    image: blwmi/facturas
     ports:
       - "3003:3003"
     depends_on:
       - db
 
   web:
-    image: blwmi/webpicco:latest
+    image: blwmi/webpicco
     ports:
       - "2080:80"
     depends_on:
