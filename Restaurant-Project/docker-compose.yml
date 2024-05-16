@@ -1,0 +1,45 @@
+version: '3.7'
+
+services:
+  db:
+    image: mysql:5.7
+    ports:
+      - "32000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: proyecto
+    volumes:
+      - type: bind
+        source: ./db
+        target: /docker-entrypoint-initdb.d/
+        read_only: true
+
+  usuarios:
+    image: blwmi/usuarios:latest
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+
+  inventario:
+    image: blwmi/inventario:latest
+    ports:
+      - "3002:3002"
+    depends_on:
+      - db
+
+  facturas:
+    image: blwmi/facturas:latest
+    ports:
+      - "3003:3003"
+    depends_on:
+      - db
+
+  web:
+    image: blwmi/webpicco:latest
+    ports:
+      - "2080:80"
+    depends_on:
+      - usuarios
+      - inventario
+      - facturas
