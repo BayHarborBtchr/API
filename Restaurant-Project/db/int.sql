@@ -33,5 +33,5 @@ CREATE TABLE preparacion (
     FOREIGN KEY (inventario_id) REFERENCES inventario
 );
 
-INSERT INTO usuarios (nombre, email, usuario, password) VALUES ('Admin', 'admin@admin.com', 'admin', 'admin');
-INSERT INTO usuarios (nombre, email, usuario, password) VALUES ('Usuario 1', 'user1@user.com', 'user1', '1234');
+INSERT INTO usuarios (nombreCompleto, correo, usuario, clave) VALUES ('Admin', 'admin@admin.com', 'admin', 'admin');
+INSERT INTO usuarios (nombreCompleto, correo, usuario, clave) VALUES ('Usuario 1', 'user1@user.com', 'user1', '1234');
