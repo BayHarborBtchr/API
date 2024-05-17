@@ -1,4 +1,12 @@
-create database proyecto
+DROP TABLE IF EXISTS usuarios;
+DROP TABLE IF EXISTS facturas;
+DROP TABLE IF EXISTS menu;
+DROP TABLE IF EXISTS inventario;
+DROP TABLE IF EXISTS preparacion;
+
+CREATE DATABASE IF NOT EXISTS proyecto;
+USE proyecto;
+
 CREATE TABLE usuarios (
   nombreCompleto VARCHAR(90),
   correo VARCHAR(80),
@@ -11,26 +19,28 @@ CREATE TABLE facturas (
     nombreCliente VARCHAR(50),
     email VARCHAR(50),
     totalCuenta DECIMAL(10,2),
-    fecha DATETIME DEFAULT
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE inventario (
+    id_inventario INT AUTO_INCREMENT PRIMARY KEY,
+    ingrediente VARCHAR(100),
+    cantidad_disponible INT
 );
 
 CREATE TABLE menu (
-    id_menu int auto_increment,
+    id_menu INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100),
     precio DECIMAL(10,2),
     cantidad INT(11)
-    id_inventario INT AUTO_INCREMENT,
-    ingrediente VARCHAR(100),
-    cantidad_disponible INT,
-    PRIMARY KEY (id_inventario)
 );
 
 CREATE TABLE preparacion (
-    preparacion INT PRIMARY KEY AUTO_INCREMENT,
+    id_preparacion INT AUTO_INCREMENT PRIMARY KEY,
     menu_id INT,
     inventario_id INT,
-    FOREIGN KEY (menu_id) REFERENCES menu,
-    FOREIGN KEY (inventario_id) REFERENCES inventario
+    FOREIGN KEY (menu_id) REFERENCES menu(id_menu),
+    FOREIGN KEY (inventario_id) REFERENCES inventario(id_inventario)
 );
 
 INSERT INTO usuarios (nombreCompleto, correo, usuario, clave) VALUES ('Admin', 'admin@admin.com', 'admin', 'admin');
