@@ -1,10 +1,10 @@
 <?php
-        session_start();
-        $us=$_SESSION["usuario"];
-        if ($us==""){
-            header("Location: index.html");
-        }
-    ?>
+    session_start();
+    $us=$_SESSION["usuario"];
+    if ($us==""){
+        header("Location: index.html");
+    }
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +32,7 @@
             <a class="nav-link" href="admin-menuPicco.php">Menu</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="admin-inventarioPicco.php">inventario</a>
+            <a class="nav-link" href="admin-inventarioPicco.php">Inventario</a>
             </li>
             <li class="nav-item">
             <a class="nav-link" href="admin-facturasPicco.php">Facturas</a>
@@ -51,7 +51,7 @@
     <thead>
         <tr>
         <th scope="col">Nombre Completo</th>
-        <th scope="col">correo</th>
+        <th scope="col">Correo</th>
         <th scope="col">Usuario</th>
         <th scope="col">Clave</th>
         </tr>
@@ -74,7 +74,7 @@
         $long=count($resp);
         for ($i=0; $i<$long; $i++){
             $dec=$resp[$i];
-            $nombrecompleto=$dec ->nombrecompleto;
+            $nombrecompleto=$dec->nombreCompleto;
             $correo=$dec->correo;
             $usuario=$dec->usuario;
             $clave=$dec->clave;
@@ -91,7 +91,5 @@
      ?>   
     </tbody>
     </table>
-
-    
 </body>
 </html>
