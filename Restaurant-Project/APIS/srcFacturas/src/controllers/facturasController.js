@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
     const items = req.body.items;
 
     const totalCuenta = await calcularTotal(items);
-    console.log(totalCuenta)
+    console.log(totalCuenta);
 
     // Si el total es 0 o negativo, retornamos un error
     if (totalCuenta <= 0) {
@@ -37,15 +37,15 @@ router.post('/', async (req, res) => {
     }
 
     // Creamos la orden
-    const response = await axios.get(`http://192.168.100.3:3001/usuarios/${usuario}`);
-    const name = response.data.nombrecompleto;
+    const response = await axios.get(`http://usuarios:3001/usuarios/${usuario}`);
+    const name = response.data.nombreCompleto;  // Asegúrate de que el nombre del campo es correcto
     const email = response.data.correo;
-    console.log("entro al usuario")
-    orden = {
-        "nombreCliente": name, 
-        "emailCliente": email, 
-        "totalCuenta": totalCuenta  // Aquí incluimos totalCuenta en el objeto orden
-    }
+    console.log("entro al usuario");
+    const orden = {
+        nombreCliente: name,
+        email: email,
+        totalCuenta: totalCuenta  // Aquí incluimos totalCuenta en el objeto orden
+    };
     const ordenRes = await facturasModel.crearfactura(orden);
 
     // Disminuimos la cantidad de unidades de los productos
@@ -54,16 +54,14 @@ router.post('/', async (req, res) => {
     return res.send("factura creada");
 });
 
-
 // Función para calcular el total de la orden
 async function calcularTotal(items) {
     let ordenTotal = 0;
     for (const producto of items) {
-        const response = await
-            axios.get(`http://192.168.100.3:3002/menu/${producto.id_menu}`);
-            console.log(`Los precios son: ${response.data.precio} y ${producto.cantidad}`)
+        const response = await axios.get(`http://inventario:3002/menu/${producto.id_menu}`);
+        console.log(`Los precios son: ${response.data.precio} y ${producto.cantidad}`);
         ordenTotal += response.data.precio * producto.cantidad;
-        console.log(ordenTotal)
+        console.log(ordenTotal);
     }
     return ordenTotal;
 }
@@ -72,7 +70,7 @@ async function calcularTotal(items) {
 async function verificarDisponibilidad(items) {
     let disponibilidad = true;
     for (const producto of items) {
-        const response = await axios.get(`http://192.168.100.3:3002/menu/${producto.id_menu}`);
+        const response = await axios.get(`http://inventario:3002/menu/${producto.id_menu}`);
         if (!response || !response.data || response.data.cantidad < producto.cantidad) {
             disponibilidad = false;
             break;
@@ -81,15 +79,13 @@ async function verificarDisponibilidad(items) {
     return disponibilidad;
 }
 
-
 // Función para disminuir la cantidad de unidades de los productos
 async function actualizarInventario(items) {
     for (const producto of items) {
-        const response = await
-            axios.get(`http://192.168.100.3:3002/menu/${producto.id_menu}`);
+        const response = await axios.get(`http://inventario:3002/menu/${producto.id_menu}`);
         const inventarioActual = response.data.cantidad;
         const inv = inventarioActual - producto.cantidad;
-        await axios.put(`http://192.168.100.3:3002/menu/${producto.id_menu}`, {
+        await axios.put(`http://inventario:3002/menu/${producto.id_menu}`, {
             cantidad: inv
         });
     }
