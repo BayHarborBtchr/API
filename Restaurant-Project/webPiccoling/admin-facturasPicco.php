@@ -1,10 +1,12 @@
 <?php
-        session_start();
-        $us=$_SESSION["usuario"];
-        if ($us==""){
-            header("Location: index.html");
-        }
-    ?>
+session_start();
+if (!isset($_SESSION["usuario"]) || $_SESSION["usuario"] == "") {
+    header("Location: index.html");
+    exit();
+} else {
+    $us = $_SESSION["usuario"];
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -43,7 +45,7 @@
             </li>
         </ul>
         <span class="navbar-text">
-            <?php echo "<a class='nav-link' href='logoutPicco.php'>Logout $us</a>" ;?>
+            <?php echo "<a class='nav-link' href='logoutPicco.php'>Logout $us</a>"; ?>
         </span>
         </div>
     </div>
@@ -60,39 +62,38 @@
     </thead>
     <tbody>
     <?php
-        $servurl="http://192.168.100.3:3003/facturas";
-        $curl=curl_init($servurl);
+    $servurl = "http://facturas:3003/facturas";
+    $curl = curl_init($servurl);
 
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $response=curl_exec($curl);
-       
-        if ($response===false){
-            curl_close($curl);
-            die("Error en la conexion");
-        }
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($curl);
 
+    if ($response === false) {
         curl_close($curl);
-        $resp=json_decode($response);
-        $long=count($resp);
-        for ($i=0; $i<$long; $i++){
-            $dec=$resp[$i];
-            $id_factura=$dec ->id;
-            $nombreCliente=$dec->nombreCliente;
-            $emailCliente=$dec->emailCliente;
-            $total=$dec->totalCuenta;
-            $fecha_creacion=$dec->fecha;
-     ?>
-    
+        die("Error en la conexion");
+    }
+
+    curl_close($curl);
+    $resp = json_decode($response);
+    $long = count($resp);
+    for ($i = 0; $i < $long; $i++) {
+        $dec = $resp[$i];
+        $id_factura = $dec->id;
+        $nombreCliente = $dec->nombreCliente;
+        $email = $dec->email; // Cambio aquí de emailCliente a email
+        $total = $dec->totalCuenta;
+        $fecha_creacion = $dec->fecha;
+    ?>
         <tr>
         <td><?php echo $id_factura; ?></td>
         <td><?php echo $nombreCliente; ?></td>
-        <td><?php echo $emailCliente; ?></td>
+        <td><?php echo $email; ?></td> <!-- Cambio aquí de emailCliente a email -->
         <td><?php echo $total; ?></td>
         <td><?php echo $fecha_creacion; ?></td>
         </tr>
-     <?php 
-        }
-     ?>   
+    <?php 
+    }
+    ?>   
     </tbody>
     </table>
 
