@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3'
 
 services:
   db:
@@ -13,6 +13,8 @@ services:
         source: ./db
         target: /docker-entrypoint-initdb.d/
         read_only: true
+    networks:
+      - webRestaurant
 
   usuarios:
     image: blwmi/usuarios
@@ -20,6 +22,8 @@ services:
       - "3001:3001"
     depends_on:
       - db
+    networks:
+      - webRestaurant
 
   inventario:
     image: blwmi/inventario
@@ -27,6 +31,8 @@ services:
       - "3002:3002"
     depends_on:
       - db
+    networks:
+      - webRestaurant
 
   facturas:
     image: blwmi/facturas
@@ -34,6 +40,8 @@ services:
       - "3003:3003"
     depends_on:
       - db
+    networks:
+      - webRestaurant
 
   web:
     image: blwmi/webpicco
@@ -43,3 +51,20 @@ services:
       - usuarios
       - inventario
       - facturas
+    networks:
+      - webRestaurant
+
+  transferencia:
+    image: blwmi/transferencia
+    depends_on:
+      - db
+    networks:
+      - webRestaurant
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: proyecto
+
+networks:
+  webRestaurant:
