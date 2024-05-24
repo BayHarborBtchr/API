@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 def load_data(file_name, nrows=8000):
     # Ruta completa al archivo CSV
-    file_path = os.path.join(os.path.dirname(__file__), '..', 'New-data', file_name)
+    file_path = os.path.join(os.path.dirname(__file__), '..', 'transferencia', file_name)
     # Leer solo los primeros nrows datos
     df = pd.read_csv(file_path, nrows=nrows)
     return df
